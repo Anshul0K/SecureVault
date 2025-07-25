@@ -1,62 +1,73 @@
 const Reimbursement = require("../models/Reimbursement");
-const User = require("../models/User");
+const cloudinary = require("cloudinary").v2;
 
-// POST /api/reimbursement
-exports.createReimbursement = async (req, res) => {
-  const { amount, comment } = req.body;
-  const paymentProof = req.file?.path;
+//submit
+exports.submitReimbursement = async (req, res) => {
+  try {
+    const { amount, comment } = req.body;
 
-  if (!amount || !paymentProof) {
-    return res.status(400).json({ message: "Amount and proof are required" });
+    if (!req.file) {
+      return res.status(400).json({ message: "Proof of payment is required" });
+    }
+
+    const reimbursement = await Reimbursement.create({
+      user: req.user._id,
+      amount,
+      comment,
+      paymentProof: req.file.path, // cloudinary URL
+    });
+
+    res.status(201).json({
+      message: "Reimbursement submitted successfully",
+      reimbursement,
+    });
+  } catch (error) {
+    console.error("Error submitting reimbursement:", error);
+    res.status(500).json({ message: "Server error submitting reimbursement" });
   }
-
-  const newRequest = await Reimbursement.create({
-    user: req.user._id,
-    amount,
-    comment,
-    paymentProof,
-  });
-
-  res.status(201).json(newRequest);
 };
 
-// GET /api/reimbursement/my
+
+// 👤 Get my reimbursements
 exports.getMyReimbursements = async (req, res) => {
-  const myRequests = await Reimbursement.find({ user: req.user._id }).sort({ createdAt: -1 });
-  res.json(myRequests);
-};
-
-// GET /api/reimbursement/all
-exports.getAllReimbursements = async (req, res) => {
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Access denied" });
+  try {
+    const reimbursements = await Reimbursement.find({ user: req.user._id }).sort({ createdAt: -1 });
+    res.json(reimbursements);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching reimbursements" });
   }
-
-  const all = await Reimbursement.find()
-    .populate("user", "name email")
-    .sort({ createdAt: -1 });
-
-  res.json(all);
 };
 
-// PATCH /api/reimbursement/:id
+// 🛡 Admin: Get all
+exports.getAllReimbursements = async (req, res) => {
+  try {
+    const reimbursements = await Reimbursement.find().populate("user", "name email").sort({ createdAt: -1 });
+    res.json(reimbursements);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching reimbursements" });
+  }
+};
+
+// ✅ Admin: Update status
 exports.updateStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Only admin can update status" });
-  }
-
-  if (!["Accepted", "Rejected"].includes(status)) {
+  if (!["Pending", "Accepted", "Rejected"].includes(status)) {
     return res.status(400).json({ message: "Invalid status" });
   }
 
-  const reimbursement = await Reimbursement.findById(id);
-  if (!reimbursement) return res.status(404).json({ message: "Request not found" });
+  try {
+    const reimbursement = await Reimbursement.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
 
-  reimbursement.status = status;
-  await reimbursement.save();
+    if (!reimbursement) return res.status(404).json({ message: "Not found" });
 
-  res.json({ message: "Status updated", reimbursement });
+    res.json(reimbursement);
+  } catch (err) {
+    res.status(500).json({ message: "Error updating status" });
+  }
 };

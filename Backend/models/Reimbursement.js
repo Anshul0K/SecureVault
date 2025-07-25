@@ -15,7 +15,7 @@ const reimbursementSchema = new mongoose.Schema(
       type: String,
     },
     paymentProof: {
-      type: String, // File path
+      type: String, // Cloudinary URL
       required: true,
     },
     status: {

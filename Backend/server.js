@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -21,10 +22,11 @@ app.use("/api/users", userRoutes);
 const payslipRoutes = require("./routes/payslipRoutes");
 app.use("/api/payslips", payslipRoutes);
 
-const loginLogRoutes = require("./routes/loginLogRoutes");
-app.use("/api/login-logs", loginLogRoutes);
+
 
 app.use("/api/reimbursements", reimbursementRoutes);
+
+
 
 
 const PORT = process.env.PORT || 4000;

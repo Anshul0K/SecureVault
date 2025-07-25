@@ -1,38 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
-const { protect } = require("../middlewares/authMiddleware");
-const Payslip = require("../models/Payslip");
+const { protect, authorize } = require("../middlewares/authMiddleware");
+const upload = require("../middlewares/uploadPayslipCloudinary");
+const {
+  uploadPayslip,
+  getMyPayslips,
+  downloadPayslip,
+} = require("../controllers/payslipController");
 
-// View all payslips of the logged-in user
-router.get("/my", protect, async (req, res) => {
-  try {
-    const payslips = await Payslip.find({ user: req.user.id });
-    res.status(200).json(payslips);
-  } catch (err) {
-    res.status(500).json({ message: "Error fetching payslips" });
-  }
-});
+// 📤 Admin uploads a payslip for a user
+router.post(
+  "/upload",
+  protect,
+  authorize("admin"),
+  upload.single("payslip"),
+  uploadPayslip
+);
 
-// Download a specific payslip file
-router.get("/download/:filename", protect, async (req, res) => {
-  const { filename } = req.params;
+// 👤 User views all their payslips
+router.get("/my", protect, getMyPayslips);
 
-  try {
-    const payslip = await Payslip.findOne({
-      filename,
-      user: req.user.id,
-    });
-
-    if (!payslip) {
-      return res.status(404).json({ message: "Payslip not found" });
-    }
-
-    const filePath = path.join(__dirname, "../uploads", filename);
-    res.download(filePath);
-  } catch (err) {
-    res.status(500).json({ message: "Error downloading file" });
-  }
-});
+// 📥 User downloads a payslip (returns Cloudinary URL)
+router.get("/download/:id", protect, downloadPayslip);
 
 module.exports = router;

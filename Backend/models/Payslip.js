@@ -7,7 +7,7 @@ const payslipSchema = new mongoose.Schema({
     required: true,
   },
   filename: {
-    type: String,
+    type: String, // this will store the Cloudinary file URL
     required: true,
   },
   uploadedAt: {

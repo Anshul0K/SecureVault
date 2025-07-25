@@ -1,27 +1,24 @@
 const express = require("express");
 const router = express.Router();
-
+const upload = require("../middlewares/uploadReimbursementCloudinary");
+const { protect, authorize } = require("../middlewares/authMiddleware");
 const {
-  createReimbursement,
+  submitReimbursement,
   getMyReimbursements,
   getAllReimbursements,
   updateStatus,
 } = require("../controllers/reimbursementController");
 
-const { protect, authorize } = require("../middlewares/authMiddleware"); // Import authorize
+// 🧾 User submits
+router.post("/submit", protect, upload.single("proof"), submitReimbursement);
 
-const upload = require("../middlewares/uploadReimbursement");
-
-// User submits reimbursement with proof upload
-router.post("/", protect, upload.single("paymentProof"), createReimbursement);
-
-// User views their own reimbursements
+// 👤 User views own reimbursements
 router.get("/my", protect, getMyReimbursements);
 
-// Admin views all reimbursements (authorize middleware called with ["admin"])
-router.get("/all", protect, authorize(["admin"]), getAllReimbursements);
+// 🛡 Admin views all
+router.get("/all", protect, authorize("admin"), getAllReimbursements);
 
-// Admin updates reimbursement status (approve/reject) (authorize middleware called with ["admin"])
-router.patch("/:id", protect, authorize(["admin"]), updateStatus);
+// 🛡 Admin updates status
+router.put("/status/:id", protect, authorize("admin"), updateStatus);
 
 module.exports = router;
