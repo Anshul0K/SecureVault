@@ -4,6 +4,8 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const reimbursementRoutes = require("./routes/reimbursementRoutes");
+
 
 dotenv.config();
 connectDB();
@@ -22,6 +24,7 @@ app.use("/api/payslips", payslipRoutes);
 const loginLogRoutes = require("./routes/loginLogRoutes");
 app.use("/api/login-logs", loginLogRoutes);
 
+app.use("/api/reimbursements", reimbursementRoutes);
 
 
 const PORT = process.env.PORT || 4000;
