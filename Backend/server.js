@@ -16,6 +16,12 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
+const payslipRoutes = require("./routes/payslipRoutes");
+app.use("/api/payslips", payslipRoutes);
+
+const loginLogRoutes = require("./routes/loginLogRoutes");
+app.use("/api/login-logs", loginLogRoutes);
+
 
 
 const PORT = process.env.PORT || 4000;

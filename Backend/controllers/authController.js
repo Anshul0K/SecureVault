@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
-  });
+  })
 };
 
 exports.register = async (req, res) => {
@@ -65,7 +65,13 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    const LoginLog = require("../models/LoginLog");
 
+  await LoginLog.create({
+    userId: user._id,
+    ipAddress: req.ip,
+    userAgent: req.headers["user-agent"],
+  });
 
     const token = generateToken(user._id);
 
