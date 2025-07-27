@@ -23,9 +23,9 @@ const Login = () => {
       const data = await loginUser(formData);
       localStorage.setItem("token", data.token);  // Save token to localStorage
       if (data.user.role === "admin") {
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } else {
-        navigate("/user");
+        navigate("/user/profile");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Invalid Credentials");

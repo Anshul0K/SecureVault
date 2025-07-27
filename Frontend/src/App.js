@@ -1,10 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TestApi from "./pages/TestApi";
-import ProtectedTest from "./pages/ProtectedTest";
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Login from "./pages/Login"; 
-import UserDashboard from "./pages/user/UserDashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import UserLayout from "./pages/UserLayout";
+import UserDashboard from "./pages/user/UserDashboard";
+import UserPayslips from "./pages/user/UserPayslips";
+import UserReimbursements from "./pages/user/Reimbursements";
+
+import AdminLayout from "./pages/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import PayslipPage from "./pages/admin/PayslipPage"; 
+import LoginHistory from "./pages/admin/LoginHistory"; 
+import Reimbursements from "./pages/admin/Reimbursements"; 
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
 import Help from "./pages/Help";
 
@@ -14,12 +23,24 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<div style={{ fontSize: "24px", textAlign: "center" }}>🏠 Home Page</div>} />
-        <Route path="/test" element={<TestApi />} />
-        <Route path="/protected" element={<ProtectedTest />} />
         <Route path="/login" element={<Login />} /> 
-        <Route path="/user" element={<UserDashboard />} />
         <Route path="/help" element={<Help />} /> 
-        <Route path="/admin" element={<PrivateRouteAdmin><AdminDashboard /></PrivateRouteAdmin>}/>
+
+        <Route path="/user" element={<ProtectedRoute> <UserLayout/> </ProtectedRoute>}>
+          <Route index element={<Navigate to="profile" />} /> 
+          <Route path="profile" element={<UserDashboard />} />
+          <Route path="payslips" element={<UserPayslips />} />
+          <Route path="reimbursements" element={<UserReimbursements />} />
+        </Route>
+
+
+        <Route path="/admin" element={ <PrivateRouteAdmin> <AdminLayout /> </PrivateRouteAdmin>}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="payslips" element={<PayslipPage />} />
+          <Route path="reimbursements" element={<Reimbursements />} />
+          <Route path="login-activity" element={<LoginHistory />} />
+        </Route>
+
       </Routes>
     </Router>
   );

@@ -1,16 +1,5 @@
-// import { Navigate } from "react-router-dom";
 
-// const ProtectedRoute = ({ children }) => {
-//   const token = localStorage.getItem("token");
 
-//   if (!token) {
-//     return <Navigate to="/login" replace />;
-//   }
-
-//   return children;
-// };
-
-// export default ProtectedRoute;
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { getUserProfile } from "../services/authService";
@@ -20,23 +9,42 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     const checkAccess = async () => {
+      console.log("🔐 ProtectedRoute mounted. Checking user access...");
+
       try {
         const user = await getUserProfile();
-        if (user.role === "user") {
-          setAuthorized(true); 
+        console.log("✅ User fetched in ProtectedRoute:", user);
+
+        if (user?.role === "user") {
+          console.log("🟢 User has 'user' role. Access granted.");
+          setAuthorized(true);
         } else {
-          setAuthorized(false); // block admin
+          console.warn("🔴 User role is not 'user'. Access denied.");
+          setAuthorized(false);
         }
-      } catch {
+
+      } catch (err) {
+        console.error("❌ Error while fetching user profile in ProtectedRoute:", err);
         setAuthorized(false);
       }
     };
+
     checkAccess();
   }, []);
 
-  if (authorized === null) return <div>Loading...</div>;
-  if (!authorized) return <Navigate to="/unauthorized" />;
+  console.log("yes i am here ");
+  if (authorized === null) {
+    console.log("⏳ Authorization check in progress...");
+    return <div>Loading...</div>;
+  }
+
+  if (!authorized) {
+    console.warn("🚫 Unauthorized access. Redirecting to /unauthorized");
+    return <Navigate to="/unauthorized" />;
+  }
+
+  console.log("✅ ProtectedRoute check complete. Rendering children...");
+  return children;
 };
 
 export default ProtectedRoute;
-
