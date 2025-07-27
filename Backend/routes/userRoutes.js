@@ -1,16 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const { protect, authorize } = require("../middlewares/authMiddleware");
+const { getUserCount } = require("../controllers/authController");
+
 
 // Example: Protected route
 router.get("/profile", protect, (req, res) => {
-  res.json({ message: "Welcome, " + req.user.name });
+  res.json({
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+  });
 });
+
 
 // Example: Admin only
 router.get("/admin", protect, authorize(["admin"]), (req, res) => {
   res.json({ message: "Admin dashboard for " + req.user.name });
 });
+
+router.get("/count", protect, authorize(["admin"]), getUserCount);
+
 
 
 

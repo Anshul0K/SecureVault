@@ -7,7 +7,10 @@ const {
   getMyReimbursements,
   getAllReimbursements,
   updateStatus,
+  countPendingReimbursements,
 } = require("../controllers/reimbursementController");
+
+router.get("/count/pending", protect, authorize("admin"), countPendingReimbursements);
 
 // 🧾 User submits
 router.post("/submit", protect, upload.single("proof"), submitReimbursement);

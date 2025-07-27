@@ -88,3 +88,14 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+// Get total users (excluding admins)
+exports.getUserCount = async (req, res) => {
+  try {
+    const count = await User.countDocuments({ role: { $ne: "admin" } });
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

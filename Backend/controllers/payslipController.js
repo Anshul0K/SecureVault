@@ -100,8 +100,25 @@ const downloadPayslip = async (req, res) => {
   }
 };
 
+const getMonthlyPayslipCount = async (req, res) => {
+  try {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const count = await Payslip.countDocuments({
+      uploadedAt: { $gte: startOfMonth },
+    });
+
+    res.status(200).json({ count });
+  } catch (err) {
+    res.status(500).json({ message: "Error getting monthly payslip count" });
+  }
+};
+
 module.exports = {
   uploadPayslip,
   getMyPayslips,
   downloadPayslip,
+  getMonthlyPayslipCount,
 };

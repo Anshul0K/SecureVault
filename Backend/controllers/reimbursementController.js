@@ -71,3 +71,13 @@ exports.updateStatus = async (req, res) => {
     res.status(500).json({ message: "Error updating status" });
   }
 };
+
+exports.countPendingReimbursements = async (req, res) => {
+  try {
+    const count = await Reimbursement.countDocuments({ status: "Pending" });
+    res.json({ count });
+  } catch (err) {
+    console.error("Error counting pending reimbursements:", err);
+    res.status(500).json({ message: "Server error while counting pending reimbursements" });
+  }
+};

@@ -2,6 +2,12 @@ import axiosInstance from "./axiosInstance";
 
 export const loginUser = async (credentials) => {
   const response = await axiosInstance.post("/api/auth/login", credentials);
+  const { token } = response.data;
+
+  if (token) {
+    localStorage.setItem("token", token);
+  }
+
   return response.data;
 };
 
@@ -11,6 +17,7 @@ export const registerUser = async (formData) => {
 };
 
 export const getUserProfile = async () => {
-  const response = await axiosInstance.get("/api/auth/profile");
+  const response = await axiosInstance.get("/api/users/profile");
   return response.data;
 };
+

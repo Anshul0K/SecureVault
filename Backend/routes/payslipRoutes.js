@@ -6,6 +6,7 @@ const {
   uploadPayslip,
   getMyPayslips,
   downloadPayslip,
+  getMonthlyPayslipCount,
 } = require("../controllers/payslipController");
 
 // 📤 Admin uploads a payslip for a user
@@ -15,6 +16,13 @@ router.post(
   authorize("admin"),
   upload.single("payslip"),
   uploadPayslip
+);
+
+router.get(
+  "/monthly/count",
+  protect,
+  authorize("admin"),
+  getMonthlyPayslipCount
 );
 
 // 👤 User views all their payslips

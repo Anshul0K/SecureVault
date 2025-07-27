@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 
 const Login = () => {
+  const navigate = useNavigate(); // ← add this line
+
+  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +22,11 @@ const Login = () => {
     try {
       const data = await loginUser(formData);
       localStorage.setItem("token", data.token);  // Save token to localStorage
-      alert("Login successful!");
+      if (data.user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Invalid Credentials");
     } finally {
