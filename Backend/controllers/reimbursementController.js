@@ -81,3 +81,13 @@ exports.countPendingReimbursements = async (req, res) => {
     res.status(500).json({ message: "Server error while counting pending reimbursements" });
   }
 };
+
+exports.getPendingReimbursements = async (req, res) => {
+  try {
+    const pending = await Reimbursement.find({ status: "Pending" }).populate("user", "name email");
+    res.status(200).json(pending);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching pending reimbursements" });
+  }
+};
+

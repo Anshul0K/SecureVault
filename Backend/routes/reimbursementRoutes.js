@@ -8,6 +8,7 @@ const {
   getAllReimbursements,
   updateStatus,
   countPendingReimbursements,
+  getPendingReimbursements
 } = require("../controllers/reimbursementController");
 
 router.get("/count/pending", protect, authorize("admin"), countPendingReimbursements);
@@ -20,6 +21,10 @@ router.get("/my", protect, getMyReimbursements);
 
 // 🛡 Admin views all
 router.get("/all", protect, authorize("admin"), getAllReimbursements);
+
+// 🛡 Admin: Get only pending reimbursements
+router.get("/pending", protect, authorize("admin"), getPendingReimbursements);
+
 
 // 🛡 Admin updates status
 router.put("/status/:id", protect, authorize("admin"), updateStatus);

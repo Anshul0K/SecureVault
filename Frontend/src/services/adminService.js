@@ -21,3 +21,29 @@ export const getRecentLoginLogs = async () => {
   return response.data.slice(-5).reverse();
 };
 
+
+export const getAllReimbursements = async () => {
+  const response = await axiosInstance.get("/api/reimbursements/all");
+  return response.data;
+};
+
+export const updateReimbursementStatus = async (id, status) => {
+  const response = await axiosInstance.put(`/api/reimbursements/status/${id}`, {
+    status,
+  });
+  return response.data;
+};
+
+export const getPendingReimbursements = async () => {
+  const response = await axiosInstance.get("/api/reimbursements/pending");
+  return response.data;
+};
+
+export const uploadPayslip = async (formData) => {
+  const response = await axiosInstance.post("/api/payslips/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
