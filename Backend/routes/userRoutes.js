@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { protect, authorize } = require("../middlewares/authMiddleware");
-const { getUserCount } = require("../controllers/authController");
+const { getUserCount, getAllUsers } = require("../controllers/authController");
 
 
 // Example: Protected route
@@ -21,6 +21,8 @@ router.get("/admin", protect, authorize(["admin"]), (req, res) => {
 
 router.get("/count", protect, authorize(["admin"]), getUserCount);
 
+// Admin route to get all users
+router.get("/all-users", protect, authorize(["admin"]), getAllUsers);
 
 
 

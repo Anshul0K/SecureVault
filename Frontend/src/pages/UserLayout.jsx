@@ -1,15 +1,8 @@
-// src/layouts/UserLayout.jsx
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 
 const UserLayout = () => {
   const navigate = useNavigate();
-
-  const handleLogout = () => { // You can remove this function if Sidebar's is sufficient
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
 
   const sidebarLinks = [
     { label: "Profile", path: "/user/profile", icon: "User" },
@@ -18,10 +11,14 @@ const UserLayout = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-black">
+    <div className="flex h-screen overflow-hidden bg-gray-100 text-black">
+      {/* Sidebar: fixed width, no scroll */}
+      <div className="w-64 bg-white border-r">
+        <Sidebar navItems={sidebarLinks} />
+      </div>
 
-      <Sidebar navItems={sidebarLinks} />
-      <main className="flex-1 p-6">
+      {/* Main content: scrollable only */}
+      <main className="flex-1 overflow-y-auto p-6">
         <Outlet />
       </main>
     </div>

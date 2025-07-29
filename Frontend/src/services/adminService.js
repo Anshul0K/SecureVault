@@ -1,4 +1,3 @@
-// src/services/adminService.js
 import axiosInstance from "./axiosInstance";
 
 export const getPendingReimbursementCount = async () => {
@@ -45,5 +44,21 @@ export const uploadPayslip = async (formData) => {
       "Content-Type": "multipart/form-data",
     },
   });
+  return response.data;
+};
+
+export const getAllLoginLogs = async () => {
+  const response = await axiosInstance.get("/api/login-logs");
+  return response.data.reverse(); // Most recent first
+};
+
+export const fetchAllUsers = async () => {
+  const response = await axiosInstance.get("/api/users/all-users");
+  return response.data.users;
+};
+
+// Register a new user
+export const registerNewUser = async (userData) => {
+  const response = await axiosInstance.post("/api/auth/register", userData);
   return response.data;
 };

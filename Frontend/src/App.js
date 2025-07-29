@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import PayslipPage from "./pages/admin/PayslipPage"; 
 import LoginHistory from "./pages/admin/LoginHistory"; 
 import Reimbursements from "./pages/admin/Reimbursements"; 
+import UsersPage from "./pages/admin/users"; 
 import PrivateRouteAdmin from "./routes/PrivateRouteAdmin";
 import Help from "./pages/Help";
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="payslips" element={<PayslipPage />} />
           <Route path="reimbursements" element={<Reimbursements />} />
           <Route path="login-activity" element={<LoginHistory />} />
+          <Route path="users" element={<UsersPage />} />
         </Route>
 
       </Routes>
