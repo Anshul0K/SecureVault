@@ -1,5 +1,4 @@
-//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import Home from "./pages/Home";
 import Login from "./pages/Login"; 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
@@ -23,7 +22,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<div style={{ fontSize: "24px", textAlign: "center" }}>🏠 Home Page</div>} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} /> 
         <Route path="/help" element={<Help />} /> 
 
