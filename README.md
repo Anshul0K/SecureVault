@@ -27,7 +27,7 @@ SecurePay Vault is a full-stack role-based fintech platform built using the MERN
 
 ---
 
-## 📸 Screenshots (stored in `screenshots/` folder)
+## 📸 Screenshots
 
 ### 1️⃣ Login Page  
 ![Login](./screenshots/1-login.png)
