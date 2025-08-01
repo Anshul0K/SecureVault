@@ -36,6 +36,18 @@ const Login = () => {
 
   return (
     <div className="h-screen w-full flex justify-center items-center bg-[linear-gradient(168deg,rgba(24,72,184,1)_0%,rgba(92,237,184,1)_50%,rgba(62,235,56,1)_100%)]">
+      <div className="fixed top-4 right-4 p-4 bg-white border border-gray-300 rounded-md shadow-md text-sm">
+    <p className="font-bold mb-1">Test Logins</p>
+    <p>
+      <span className="font-medium">User:</span> priyanshu@example.com
+    </p>
+    <p>
+      <span className="font-medium">Admin:</span> anshul@example.com
+    </p>
+    <p>
+      <span className="font-medium">Password:</span> 123456
+    </p>
+  </div>
       <div className="max-w-md w-11/12 p-8 bg-white border border-gray-300 rounded-3xl shadow-md">
         <img src="/assets/Horizontal_Logo.png" className="mt-[-30px] mb-[-20px]"></img>
         <form onSubmit={handleSubmit}>
