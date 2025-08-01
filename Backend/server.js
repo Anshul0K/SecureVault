@@ -15,8 +15,15 @@ connectDB();
 const app = express();
 //app.use(cors());
 app.use(cors({
-  origin: "http://localhost:3000", // your frontend origin
-  credentials: true,               // allow cookies or headers like Authorization
+  origin: function (origin, callback) {
+    // Check if the request origin is null (e.g., file:// protocol)
+    if (!origin) {
+      return callback(null, true);
+    }
+    // Allow the request if it comes from any origin
+    callback(null, true);
+  },
+  credentials: true,          
 }));
 app.use(express.json());
 

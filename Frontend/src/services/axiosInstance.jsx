@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_API_URL; // ✅ CRA-style
+const BASE_URL = import.meta.env.VITE_APP_API_URL; // ✅ CRA-style
 
 
 
