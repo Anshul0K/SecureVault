@@ -2,7 +2,7 @@
 
 SecurePay Vault is a full-stack role-based fintech platform built using the MERN stack. It allows Admins to upload payslips, track login activity, and manage reimbursements, while Users can securely view/download payslips and submit reimbursement requests. <br>
 
-Click here to check:- [Hosted website](https://securepay-vault.vercel.app/) for more info.
+Click here to check:- [Hosted website](https://securepay-vault.vercel.app/)
 
 
 ---
